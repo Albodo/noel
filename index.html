@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Décompte avant Noël</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800&family=Fraunces:ital,opsz,wght@1,9..144,600&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+/* ==========================================================
+   Décompte avant Noël — styles
+   ========================================================== */
+
+:root {
+  /* Nuit de sapin, lumières chaudes */
+  --sapin-nuit:   #0F241D;
+  --sapin:        #173A2D;
+  --aiguille:     #2F6B4C;
+  --ivoire:       #F4ECDF;
+  --or:           #E8B64C;
+  --rouge:        #D9443A;
+  --bleu:         #79AEE0;
+  --gris-vert:    #9DB3A8;
+
+  --fond:         var(--sapin-nuit);
+  --surface:      var(--sapin);
+  --texte:        var(--ivoire);
+  --texte-doux:   var(--gris-vert);
+
+  --police-chiffres: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --police-titre:    "Fraunces", Georgia, "Times New Roman", serif;
+  --police-texte:    "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --espace: clamp(1rem, 3vw, 2rem);
+  --largeur-max: 72rem;
+
+  box-sizing: border-box;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+code { font-size: .9em; color: var(--or); }
+
+:focus-visible { outline: 2px solid var(--or); outline-offset: 3px; }
+
+/* ----------------------------------------------------------
+   Héro
+   ---------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
+  /* halo chaud sous la guirlande */
+  background:
+    radial-gradient(120% 60% at 50% 0%, color-mix(in srgb, var(--or) 14%, transparent), transparent 70%),
+    var(--fond);
+  overflow: hidden;
+}
+
+.hero__contenu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--espace) * 2) var(--espace) calc(var(--espace) * 3);
+}
+
+.hero__intro {
+  margin: 0 0 1rem;
+  font-family: var(--police-titre);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 3.5vw, 2.25rem);
+  color: var(--or);
+}
+
+.decompte {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  gap: 0 clamp(1.5rem, 4.5vw, 4.5rem);
+  justify-content: center;
+}
+
+.unite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 2ch;
+}
+
+.unite__valeur {
+  font-family: var(--police-chiffres);
+  font-weight: 800;
+  font-size: clamp(3rem, 8.5vw, 7.5rem);
+  line-height: .85;
+  letter-spacing: .02em;
+  min-width: 2ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--ivoire);
+  text-shadow: 0 0 .35em color-mix(in srgb, var(--or) 35%, transparent);
+}
+
+.unite__nom {
+  margin-top: .6rem;
+  color: var(--texte-doux);
+  font-size: clamp(.85rem, 1.6vw, 1rem);
+}
+
+.hero__titre {
+  margin: 1.25rem 0 0;
+  font-family: var(--police-titre);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2.25rem, 7vw, 5rem);
+  line-height: 1;
+}
+
+.hero__date {
+  margin: .75rem 0 0;
+  color: var(--texte-doux);
+}
+
+@media (max-width: 44rem) {
+  .decompte { grid-template-columns: repeat(3, auto); gap: 2rem clamp(2rem, 9vw, 3.5rem); }
+  .unite__valeur { font-size: clamp(3rem, 16vw, 5rem); }
+}
+
+/* Le jour de Noël : l'horloge laisse place au message */
+.hero--noel .decompte,
+.hero--noel .hero__intro { display: none; }
+.hero--noel .hero__titre {
+  font-size: clamp(3.5rem, 13vw, 9rem);
+  color: var(--or);
+}
+
+/* ----------------------------------------------------------
+   Guirlande et lumières
+   ---------------------------------------------------------- */
+
+.guirlande {
+  position: relative;
+  height: clamp(8rem, 18vw, 12rem);
+  flex-shrink: 0;
+}
+
+.guirlande svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.guirlande__branche  { fill: none; stroke: var(--aiguille); stroke-linecap: round; }
+.guirlande__aiguilles { fill: none; stroke: #245A40; }
+.guirlande__aiguilles--claires { stroke: #4E9E72; }
+.guirlande__ombre    { fill: none; stroke: #0A1A14; stroke-linecap: round; opacity: .6; }
+.guirlande__fil      { fill: none; stroke: #0C1C16; stroke-width: 1.5; }
+
+.ampoule__culot { fill: #8C7A55; }
+.ampoule__verre {
+  fill: var(--c);
+  filter: drop-shadow(0 0 4px var(--c)) drop-shadow(0 0 12px var(--c));
+  animation: scintille var(--duree, 2.4s) ease-in-out var(--delai, 0s) infinite alternate;
+}
+
+@keyframes scintille {
+  0%, 55% { opacity: 1; }
+  100%    { opacity: .35; filter: drop-shadow(0 0 1px var(--c)); }
+}
+
+/* ----------------------------------------------------------
+   Rayons (sections)
+   ---------------------------------------------------------- */
+
+main {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: calc(var(--espace) * 2) var(--espace) calc(var(--espace) * 3);
+}
+
+.rayon + .rayon { margin-top: calc(var(--espace) * 2.5); }
+
+.rayon__titre {
+  margin: 0 0 var(--espace);
+  padding-bottom: .5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--or) 35%, transparent);
+  font-family: var(--police-titre);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  line-height: 1.1;
+}
+
+.vide { margin: 0; color: var(--texte-doux); }
+
+.grille {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--espace) calc(var(--espace) * .75);
+}
+
+.grille:empty { display: none; }
+.grille:not(:empty) + .vide { display: none; }
+
+/* Légende commune */
+.carte__lien { color: inherit; text-decoration: none; display: block; }
+.carte__lien:hover .carte__titre { text-decoration: underline; text-underline-offset: 3px; }
+
+.carte__titre {
+  margin: .75rem 0 0;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.carte__auteur {
+  margin: .1rem 0 0;
+  color: var(--texte-doux);
+  font-size: .9rem;
+}
+
+/* ----------------------------------------------------------
+   Films : affiches 2:3
+   ---------------------------------------------------------- */
+
+.grille--films { grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); }
+
+.carte-film__affiche {
+  aspect-ratio: 2 / 3;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ivoire) 8%, transparent);
+}
+
+.carte-film__affiche img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Sans affiche : le titre prend la place de l'image */
+.carte-film__affiche--vide {
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  background:
+    linear-gradient(180deg, transparent 40%, rgba(0,0,0,.3)),
+    var(--surface);
+  font-family: var(--police-titre);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.05;
+  color: var(--or);
+}
+
+/* ----------------------------------------------------------
+   Albums : pochettes carrées, vinyle qui dépasse
+   ---------------------------------------------------------- */
+
+.grille--albums { grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); }
+
+.carte-album__pochette {
+  position: relative;
+  aspect-ratio: 1;
+  margin-right: 12%;
+}
+
+.carte-album__pochette::before {
+  content: "";
+  position: absolute;
+  inset: 4% -12% 4% auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--rouge) 0 14%, #111 14.5% 17%, transparent 17.5%),
+    repeating-radial-gradient(circle, #2c2b2a 0 2px, #1a1918 2px 4px);
+  transition: transform .4s ease;
+}
+
+.carte-album__lien:hover .carte-album__pochette::before,
+.carte-album__lien:focus-visible .carte-album__pochette::before { transform: translateX(8%) rotate(40deg); }
+
+.carte-album__pochette img,
+.carte-album__substitut {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 4px 0 12px rgba(0,0,0,.45);
+}
+
+/* Sans pochette */
+.carte-album__substitut {
+  display: flex;
+  align-items: flex-end;
+  padding: .9rem;
+  background: var(--surface);
+  font-family: var(--police-titre);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.05;
+  color: var(--or);
+}
+
+/* ----------------------------------------------------------
+   Mouvement réduit : lumières fixes
+   ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <!-- Guirlande de sapin + ampoules, dessinée par js/guirlande.js -->
+    <div class="guirlande" id="guirlande" aria-hidden="true"></div>
+
+    <div class="hero__contenu">
+      <p class="hero__intro">Plus que</p>
+
+      <div class="decompte" id="decompte" role="timer" aria-live="off">
+        <div class="unite"><span class="unite__valeur" data-unite="mois">--</span><span class="unite__nom" data-nom="mois">mois</span></div>
+        <div class="unite"><span class="unite__valeur" data-unite="semaines">--</span><span class="unite__nom" data-nom="semaines">semaines</span></div>
+        <div class="unite"><span class="unite__valeur" data-unite="jours">--</span><span class="unite__nom" data-nom="jours">jours</span></div>
+        <div class="unite"><span class="unite__valeur" data-unite="heures">--</span><span class="unite__nom" data-nom="heures">heures</span></div>
+        <div class="unite"><span class="unite__valeur" data-unite="minutes">--</span><span class="unite__nom" data-nom="minutes">minutes</span></div>
+        <div class="unite"><span class="unite__valeur" data-unite="secondes">--</span><span class="unite__nom" data-nom="secondes">secondes</span></div>
+      </div>
+
+      <h1 class="hero__titre" id="hero-titre">avant Noël</h1>
+      <p class="hero__date" id="hero-date"></p>
+    </div>
+  </header>
+
+  <main>
+    <section class="rayon" aria-labelledby="titre-films">
+      <h2 class="rayon__titre" id="titre-films">Films</h2>
+      <ul class="grille grille--films" id="liste-films"></ul>
+      <p class="vide">Aucun film pour l'instant. Ajoutez-en dans <code>js/data.js</code>.</p>
+    </section>
+
+    <section class="rayon" aria-labelledby="titre-albums">
+      <h2 class="rayon__titre" id="titre-albums">Albums</h2>
+      <ul class="grille grille--albums" id="liste-albums"></ul>
+      <p class="vide">Aucun album pour l'instant. Ajoutez-en dans <code>js/data.js</code>.</p>
+    </section>
+  </main>
+
+  <script>
+/* ==========================================================
+   Données — seul fichier à modifier pour ajouter des films
+   et des albums. Les listes sont vides pour l'instant.
+
+   Film :
+   {
+     titre: "Titre du film",
+     realisateur: "Nom",               // facultatif
+     annee: 1990,                      // facultatif
+     affiche: "images/affiches/x.jpg", // facultatif
+     lien: "https://..."               // facultatif
+   }
+
+   Album :
+   {
+     titre: "Titre de l'album",
+     artiste: "Nom",                     // facultatif
+     annee: 1994,                        // facultatif
+     pochette: "images/pochettes/x.jpg", // facultatif
+     lien: "https://..."                 // facultatif
+   }
+   ========================================================== */
+
+const FILMS = [];
+
+const ALBUMS = [];
+
+</script>
+  <script>
+/* ==========================================================
+   Décompte avant le 25 décembre
+   Mois (calendaires), semaines, jours, heures, minutes, secondes
+   ========================================================== */
+
+const Decompte = (() => {
+  const SEC = 1000, MIN = 60 * SEC, HEURE = 60 * MIN, JOUR = 24 * HEURE, SEMAINE = 7 * JOUR;
+
+  // Prochain Noël à minuit. Le 25 décembre lui-même, on renvoie celui du jour.
+  function prochainNoel(maintenant = new Date()) {
+    const annee = maintenant.getFullYear();
+    const finNoel = new Date(annee, 11, 26);
+    return maintenant >= finNoel ? new Date(annee + 1, 11, 25) : new Date(annee, 11, 25);
+  }
+
+  function estNoel(maintenant = new Date()) {
+    return maintenant.getMonth() === 11 && maintenant.getDate() === 25;
+  }
+
+  // Ajoute n mois en restant dans le mois visé (31 janv. + 1 mois = 28/29 févr.)
+  function ajouterMois(date, n) {
+    const d = new Date(date);
+    const jour = d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth() + n);
+    const dernier = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+    d.setDate(Math.min(jour, dernier));
+    return d;
+  }
+
+  function tempsRestant(cible, maintenant = new Date()) {
+    if (maintenant >= cible) return { mois: 0, semaines: 0, jours: 0, heures: 0, minutes: 0, secondes: 0 };
+
+    let mois = 0;
+    while (ajouterMois(maintenant, mois + 1) <= cible) mois++;
+
+    let reste = cible - ajouterMois(maintenant, mois);
+    const semaines = Math.floor(reste / SEMAINE); reste -= semaines * SEMAINE;
+    const jours    = Math.floor(reste / JOUR);    reste -= jours * JOUR;
+    const heures   = Math.floor(reste / HEURE);   reste -= heures * HEURE;
+    const minutes  = Math.floor(reste / MIN);     reste -= minutes * MIN;
+    const secondes = Math.floor(reste / SEC);
+
+    return { mois, semaines, jours, heures, minutes, secondes };
+  }
+
+  const NOMS = {
+    mois:     ["mois", "mois"],
+    semaines: ["semaine", "semaines"],
+    jours:    ["jour", "jours"],
+    heures:   ["heure", "heures"],
+    minutes:  ["minute", "minutes"],
+    secondes: ["seconde", "secondes"],
+  };
+
+  const formatDate = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+
+  function demarrer() {
+    const hero = document.querySelector(".hero");
+    const titre = document.getElementById("hero-titre");
+    const date = document.getElementById("hero-date");
+
+    function tick() {
+      const maintenant = new Date();
+
+      if (estNoel(maintenant)) {
+        hero.classList.add("hero--noel");
+        titre.textContent = "Joyeux Noël";
+        date.textContent = "";
+        return;
+      }
+
+      hero.classList.remove("hero--noel");
+      titre.textContent = "avant Noël";
+      const cible = prochainNoel(maintenant);
+      date.textContent = formatDate.format(cible);
+
+      const r = tempsRestant(cible, maintenant);
+      for (const [unite, valeur] of Object.entries(r)) {
+        const deuxChiffres = ["heures", "minutes", "secondes"].includes(unite);
+        document.querySelector(`[data-unite="${unite}"]`).textContent = deuxChiffres ? String(valeur).padStart(2, "0") : valeur;
+        document.querySelector(`[data-nom="${unite}"]`).textContent = NOMS[unite][valeur > 1 ? 1 : 0];
+      }
+    }
+
+    tick();
+    // Se cale sur le début de chaque seconde
+    setTimeout(() => { tick(); setInterval(tick, SEC); }, SEC - (Date.now() % SEC));
+  }
+
+  return { demarrer, tempsRestant, prochainNoel };
+})();
+
+</script>
+  <script>
+/* ==========================================================
+   Guirlande de sapin drapée + ampoules qui scintillent
+   Redessinée à chaque redimensionnement pour garder
+   des festons réguliers quelle que soit la largeur.
+   ========================================================== */
+
+const Guirlande = (() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const COULEURS = ["var(--rouge)", "var(--or)", "var(--bleu)", "#7FD08A", "#F29BB8"];
+  const ESPACEMENT_AMPOULES = 46; // px le long du fil
+
+  function el(nom, attrs = {}) {
+    const n = document.createElementNS(NS, nom);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    return n;
+  }
+
+  // Chemin en festons : une suite de courbes qui pendent entre les points d'accroche.
+  // Les courbes débordent un peu à gauche et à droite pour ne pas s'arrêter net au bord.
+  function chemin(largeur, festons, haut, creux, decalageX = 0, decalageY = 0) {
+    const pas = largeur / festons;
+    const y0 = haut + decalageY, y1 = creux + decalageY;
+    let x = -pas + decalageX;
+    let d = `M ${x} ${y0}`;
+    for (let i = -1; i <= festons; i++) {
+      const x0 = x, x2 = x + pas;
+      d += ` C ${x0 + pas * 0.25} ${y1}, ${x2 - pas * 0.25} ${y1}, ${x2} ${y0}`;
+      x = x2;
+    }
+    return d;
+  }
+
+  // Place des ampoules le long d'un fil déjà inséré dans le SVG
+  function ampoules(svg, fil, decalage, taille, largeur) {
+    const longueur = fil.getTotalLength();
+    for (let i = 1, l = ESPACEMENT_AMPOULES; l < longueur; i++, l += ESPACEMENT_AMPOULES * taille) {
+      const p = fil.getPointAtLength(l);
+      if (p.x < -20 || p.x > largeur + 20) continue;
+      const g = el("g", { transform: `translate(${p.x} ${p.y}) scale(${taille})` });
+      const k = i + decalage;
+      g.style.setProperty("--c", COULEURS[k % COULEURS.length]);
+      // Rythmes décalés pour éviter un clignotement uniforme
+      g.style.setProperty("--delai", `${((k * 37) % 23) / 10}s`);
+      g.style.setProperty("--duree", `${1.8 + ((k * 53) % 17) / 10}s`);
+      g.append(
+        el("rect", { class: "ampoule__culot", x: -3, y: -1, width: 6, height: 7, rx: 1 }),
+        el("ellipse", { class: "ampoule__verre", cx: 0, cy: 14, rx: 5.5, ry: 9 })
+      );
+      svg.append(g);
+    }
+  }
+
+  function dessiner(conteneur) {
+    const largeur = conteneur.clientWidth;
+    const hauteur = conteneur.clientHeight;
+    if (!largeur) return;
+
+    const festons = Math.max(2, Math.round(largeur / 380));
+    const pas = largeur / festons;
+    const svg = el("svg", { viewBox: `0 0 ${largeur} ${hauteur}` });
+    conteneur.replaceChildren(svg);
+
+    // 1. Fil de lumières seul, à l'arrière, décalé d'un demi-feston et plus bas
+    const filArriere = el("path", { d: chemin(largeur, festons, 0, hauteur * 1.1, pas / 2), class: "guirlande__fil" });
+    svg.append(filArriere);
+    ampoules(svg, filArriere, 2, 0.75, largeur);
+
+    // 2. Branche de sapin : ombre, masse, aiguilles
+    const d = chemin(largeur, festons, 6, hauteur * 0.85);
+    svg.append(
+      el("path", { d: chemin(largeur, festons, 6, hauteur * 0.85, 0, 6), class: "guirlande__ombre", "stroke-width": 34 }),
+      el("path", { d, class: "guirlande__branche", "stroke-width": 26 }),
+      el("path", { d, class: "guirlande__aiguilles", "stroke-width": 36, "stroke-dasharray": "1.6 3.4" }),
+      el("path", { d, class: "guirlande__aiguilles guirlande__aiguilles--claires", "stroke-width": 22, "stroke-dasharray": "1 4", "stroke-dashoffset": 2 })
+    );
+
+    // 3. Lumières enroulées dans la branche
+    const fil = el("path", { d: chemin(largeur, festons, 6, hauteur * 0.85, 0, 8), class: "guirlande__fil" });
+    svg.append(fil);
+    ampoules(svg, fil, 0, 1, largeur);
+  }
+
+  function demarrer(id) {
+    const conteneur = document.getElementById(id);
+    if (!conteneur) return;
+    dessiner(conteneur);
+    let attente;
+    new ResizeObserver(() => {
+      clearTimeout(attente);
+      attente = setTimeout(() => dessiner(conteneur), 120);
+    }).observe(conteneur);
+  }
+
+  return { demarrer };
+})();
+
+</script>
+  <script>
+/* ==========================================================
+   Rendu des listes et lancement
+   ========================================================== */
+
+function creer(tag, classe, texte) {
+  const el = document.createElement(tag);
+  if (classe) el.className = classe;
+  if (texte != null) el.textContent = texte;
+  return el;
+}
+
+function enveloppe(item, classe) {
+  if (!item.lien) return creer("div", classe);
+  const a = creer("a", `carte__lien ${classe}`);
+  a.href = item.lien;
+  a.target = "_blank";
+  a.rel = "noopener";
+  return a;
+}
+
+function legende(conteneur, item, auteur) {
+  conteneur.append(creer("h3", "carte__titre", item.titre));
+  const infos = [auteur, item.annee].filter(Boolean).join(", ");
+  if (infos) conteneur.append(creer("p", "carte__auteur", infos));
+}
+
+function image(src, alt) {
+  const img = creer("img");
+  img.src = src;
+  img.alt = alt;
+  img.loading = "lazy";
+  return img;
+}
+
+function carteFilm(film) {
+  const li = creer("li", "carte carte-film");
+  const lien = enveloppe(film, "carte-film__lien");
+  let affiche;
+  if (film.affiche) {
+    affiche = creer("div", "carte-film__affiche");
+    affiche.append(image(film.affiche, `Affiche de ${film.titre}`));
+  } else {
+    affiche = creer("div", "carte-film__affiche carte-film__affiche--vide", film.titre);
+    affiche.setAttribute("aria-hidden", "true");
+  }
+  lien.append(affiche);
+  legende(lien, film, film.realisateur);
+  li.append(lien);
+  return li;
+}
+
+function carteAlbum(album) {
+  const li = creer("li", "carte carte-album");
+  const lien = enveloppe(album, "carte-album__lien");
+  const pochette = creer("div", "carte-album__pochette");
+  if (album.pochette) {
+    pochette.append(image(album.pochette, `Pochette de ${album.titre}`));
+  } else {
+    const sub = creer("div", "carte-album__substitut", album.titre);
+    sub.setAttribute("aria-hidden", "true");
+    pochette.append(sub);
+  }
+  lien.append(pochette);
+  legende(lien, album, album.artiste);
+  li.append(lien);
+  return li;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("liste-films").append(...FILMS.map(carteFilm));
+  document.getElementById("liste-albums").append(...ALBUMS.map(carteAlbum));
+  Guirlande.demarrer("guirlande");
+  Decompte.demarrer();
+});
+
+</script>
+</body>
+</html>
